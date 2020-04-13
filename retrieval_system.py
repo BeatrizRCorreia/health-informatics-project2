@@ -5,8 +5,10 @@ from whoosh.index import create_in
 from whoosh.index import open_dir
 from whoosh.fields import Schema, TEXT, NUMERIC
 from Document import Document
+from Query import Query
 
 fp_allDocs = "/home/beatriz/Documents/TIS/health_informatics_project2/med/MED.ALL"
+fp_allQueries = "/home/beatriz/Documents/TIS/health_informatics_project2/med/MED.QRY"
 
 def parseAllDocs():
 	allDocs = []
@@ -50,6 +52,32 @@ def parseAllDocs():
 	fp.close()
 	return allDocs
 
+def parseAllQueries():
+	allQueries = []
+	with open(fp_allQueries) as fp:
+		line = fp.readline()
+		flagInsideQuery = 0
+		while line:
+			if (flagInsideQuery == 0) and (".I" in line.strip()):
+				flagInsideQuery = 1
+				queryID = ''.join(filter(str.isdigit, line))
+				queryContent = ''
+			elif (line.strip() == ".W"):
+				pass
+			elif (flagInsideQuery == 1) and (".I" not in line.strip()):
+				queryContent += line.strip()
+				queryContent += ' '
+			elif (flagInsideQuery == 1) and (".I" in line.strip()):
+				flagInsideQuery = 0
+				query = Query(int(queryID), queryContent)
+				allQueries.append(query)
+				continue
+			line = fp.readline()
+		query = Query(int(queryID), queryContent)
+		allQueries.append(query)
+	fp.close()
+	return allQueries
+
 def indexMedlineCollection(allDocs):
 	schema = Schema(docID = NUMERIC(unique = True, stored = True), docTitle = TEXT(stored = True), docContent = TEXT(stored = True), docAll = TEXT(stored = True))
 	if not os.path.exists("indexdir"):
@@ -76,6 +104,9 @@ if __name__ == '__main__':
 
 	# PRINTS THE INDEXATION GENERATED
 	checkDocumentsIndexed()
+
+	# PARSES QUERIES FROM MED.QRY INTO OBJECTS OF TYPE QUERY
+	allQueries = parseAllQueries()
 
 	# REMOVES THE DIRECTORY CREATED FOR THE INDEXING
 	shutil.rmtree("indexdir")
