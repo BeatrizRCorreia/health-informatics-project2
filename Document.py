@@ -17,3 +17,6 @@ class Document:
 
 	def get_docAll(self):
 		return self.docAll
+
+	def set_docAll(self, newAll):
+		self.docAll = newAll

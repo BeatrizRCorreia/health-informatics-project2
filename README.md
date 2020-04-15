@@ -2,7 +2,7 @@
 
 The [Medline collection](http://ir.dcs.gla.ac.uk/resources/test_collections/medl/) is a classical resource in information retrieval research, originally created to assist in the development of evaluation experiments. It is a small subset of MEDLINE, consisting of 1033 documents and 30 queries, for which we have relevance judgements.
 
-Using a Python retrieval library named [Woosh](https://whoosh.readthedocs.io/), you should:
+Using a Python retrieval library named [Whoosh](https://whoosh.readthedocs.io/), you should:
 * **(i)** index the Medline collection considering the documents in the file named MED.ALL,
 * **(ii)** use the index to retrieve documents for each query in the file named MED.QRY, and
 * **(iii)** assess the performance of the system using the relevance judgements in the file named MED.REL, specifically by computing the Precision@10 metric.
