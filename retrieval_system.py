@@ -228,15 +228,18 @@ def querySearch(allQueries):
 	return
 
 def assessSystemPerformance(allQueries):
-	TOTAL_relevant_retrieved_frequency = 0
-	TOTAL_relevant_retrieved_TFIDF = 0
-	TOTAL_relevant_retrieved_BM25F = 0
+	TOTAL_precisions_frequency = 0
+	TOTAL_precisions_TFID = 0
+	TOTAL_precisions_BM25F = 0
+	TOTAL_recalls_frequency = 0
+	TOTAL_recalls_TFID = 0
+	TOTAL_recalls_BM25F = 0
 	for query in allQueries:
 		listOftop10_retrieved_frequency = query.get_queryResult().get_listOfDocIDsRetrieved_frequency()[:10]
 		listOftop10_retrieved_TFIDF = query.get_queryResult().get_listOfDocIDsRetrieved_TFIDF()[:10]
 		listOftop10_retrieved_BM25F = query.get_queryResult().get_listOfDocIDsRetrieved_BM25F()[:10]
 		listOf_relevant = query.get_queryResult().get_listOfDocIDsGiven()
-		print('relevant:', listOf_relevant)
+		print('\nrelevant:', listOf_relevant)
 		print('top 10 retrieved by frequency:', listOftop10_retrieved_frequency)
 		print('top 10 retrieved by TF-IDF:', listOftop10_retrieved_TFIDF)
 		print('top 10 retrieved by BM25F:', listOftop10_retrieved_BM25F)
@@ -247,28 +250,40 @@ def assessSystemPerformance(allQueries):
 		for retrieved in listOftop10_retrieved_frequency:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_frequency += 1
-		print('LEN LIST', len(listOftop10_retrieved_frequency))
 		precision_at_10_frequency = (relevant_retrieved_frequency / len(listOftop10_retrieved_frequency)) * 100
-		print(precision_at_10_frequency)
-		TOTAL_relevant_retrieved_frequency += precision_at_10_frequency
+		print("Precision @ 10:", precision_at_10_frequency)
+		recall_at_10_frequency = (relevant_retrieved_frequency / len(listOf_relevant)) * 100
+		print("Recall @ 10:", recall_at_10_frequency)
+		TOTAL_precisions_frequency += precision_at_10_frequency
+		TOTAL_recalls_frequency += recall_at_10_frequency
 
 		for retrieved in listOftop10_retrieved_TFIDF:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_TFIDF += 1
 		precision_at_10_TFIDF = (relevant_retrieved_TFIDF / len(listOftop10_retrieved_frequency)) * 100
-		print(precision_at_10_TFIDF)
-		TOTAL_relevant_retrieved_TFIDF += precision_at_10_TFIDF
+		print("Precision @ 10:", precision_at_10_TFIDF)
+		recall_at_10_TFIDF = (relevant_retrieved_TFIDF / len(listOf_relevant)) * 100
+		print("Recall @ 10:", recall_at_10_TFIDF)
+		TOTAL_precisions_TFID += precision_at_10_TFIDF
+		TOTAL_recalls_TFID += recall_at_10_TFIDF
 
 		for retrieved in listOftop10_retrieved_BM25F:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_BM25F += 1
 		precision_at_10_BM25F = (relevant_retrieved_BM25F / len(listOftop10_retrieved_frequency)) * 100
-		print(precision_at_10_BM25F)
-		TOTAL_relevant_retrieved_BM25F += precision_at_10_BM25F
+		print("Precision @ 10:", precision_at_10_BM25F)
+		recall_at_10_BM25F = (relevant_retrieved_BM25F / len(listOf_relevant)) * 100
+		print("Recall @ 10:", recall_at_10_BM25F)
+		TOTAL_precisions_BM25F += precision_at_10_BM25F
+		TOTAL_recalls_BM25F += recall_at_10_BM25F
 
-	print('\nMean Precision@10 for frequency:', (TOTAL_relevant_retrieved_frequency / len(allQueries)), '%')
-	print('Mean Precision@10 for TFIDF:', (TOTAL_relevant_retrieved_TFIDF / len(allQueries)), '%')
-	print('Mean Precision@10 for BM25F:', (TOTAL_relevant_retrieved_BM25F / len(allQueries)), '%')
+	print('\nMean Precision@10 for frequency:', (TOTAL_precisions_frequency / len(allQueries)), '%')
+	print('Mean Precision@10 for TFIDF:', (TOTAL_precisions_TFID / len(allQueries)), '%')
+	print('Mean Precision@10 for BM25F:', (TOTAL_precisions_BM25F / len(allQueries)), '%')
+
+	print('\nMean Recall@10 for frequency:', (TOTAL_recalls_frequency / len(allQueries)), '%')
+	print('Mean Recall@10 for TFIDF:', (TOTAL_recalls_TFID / len(allQueries)), '%')
+	print('Mean Recall@10 for BM25F:', (TOTAL_recalls_BM25F / len(allQueries)), '%')
 
 if __name__ == '__main__':
 
