@@ -259,7 +259,7 @@ def assessSystemPerformance(allQueries):
 		print('----------------------------')
 		print('| Scoring algorithm: BM25F |')
 		print('----------------------------')
-		print('top 10 retrieved by BM25F:', listOftop10_retrieved_BM25F)
+		print('Top 10 documents retrieved by BM25F:', listOftop10_retrieved_BM25F)
 		precision_at_10_BM25F = (relevant_retrieved_BM25F / len(listOftop10_retrieved_frequency)) * 100
 		print("\tPrecision@10:", round(precision_at_10_BM25F, 1), '%')
 		recall_at_10_BM25F = (relevant_retrieved_BM25F / len(listOf_relevant)) * 100
