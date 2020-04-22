@@ -1,9 +1,9 @@
 class Query:
 
-	def __init__(self, queryID, queryContent, queryResult):
+	def __init__(self, queryID, queryContent, QueryResult):
 		self.queryID = queryID
 		self.queryContent = queryContent
-		self.queryResult = queryResult
+		self.QueryResult = QueryResult
 
 	def get_queryID(self):
 		return self.queryID
@@ -11,11 +11,11 @@ class Query:
 	def get_queryContent(self):
 		return self.queryContent
 
-	def get_queryResult(self):
-		return self.queryResult
+	def get_QueryResult(self):
+		return self.QueryResult
 
 	def set_queryContent(self, newContent):
 		self.queryContent = newContent
 
-	def set_queryResult(self, newQueryResult):
-		self.queryResult = newQueryResult
+	def set_QueryResult(self, newQueryResult):
+		self.QueryResult = newQueryResult

@@ -16,9 +16,10 @@ from Document import Document
 from Query import Query
 from QueryResult import QueryResult
 
-fp_allDocs = "/home/beatriz/Documents/TIS/health_informatics_project2/med/MED.ALL"
-fp_allQueries = "/home/beatriz/Documents/TIS/health_informatics_project2/med/MED.QRY"
-fp_allResults = "/home/beatriz/Documents/TIS/health_informatics_project2/med/MED.REL"
+currentDirectory = os.getcwd()
+fp_allDocs = currentDirectory + "/med/MED.ALL"
+fp_allQueries = currentDirectory + "/med/MED.QRY"
+fp_allResults = currentDirectory + "/med/MED.REL"
 
 def parseAllDocs():
 	allDocs = []
@@ -97,7 +98,7 @@ def parseAllResults(allQueries):
 			parsedLine = line.split()
 			for query in allQueries:
 				if (int(parsedLine[0]) == query.get_queryID()):
-					query.get_queryResult().add_docIDGiven(int(parsedLine[2]))
+					query.get_QueryResult().add_docIDGiven(int(parsedLine[2]))
 			line = fp.readline()
 	return
 
@@ -113,7 +114,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 			new = re.sub("[\"\'\(\)]", "", new)
 			new = new.strip()
 			doc.set_docAll(new)
-			# print(new)
 		for query in allQueries:
 			new = query.get_queryContent()
 			new = re.sub("([0-9]+\.)", "", new)
@@ -124,7 +124,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 			new = re.sub("[\"\'\(\)]", "", new)
 			new = new.strip()
 			query.set_queryContent(new)
-			# print(new)
 	if (removeStopwords == True):
 		stopWords = list(stopwords.words('english'))
 		for doc in allDocs:
@@ -136,7 +135,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 					listWithAllWordsAfter.append(word)
 				new = ' '.join(listWithAllWordsAfter)
 			doc.set_docAll(new)
-			# print(new)
 		for query in allQueries:
 			new = query.get_queryContent()
 			listWithAllWordsBefore = new.split()
@@ -146,7 +144,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 					listWithAllWordsAfter.append(word)
 				new = ' '.join(listWithAllWordsAfter)
 			query.set_queryContent(new)
-			# print(new)
 	if (tokenizationAndStemmer == True):
 		stemmer = nltk.stem.PorterStemmer()
 		for doc in allDocs:
@@ -158,7 +155,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 				listWithAllWordsStemmed.append(word)
 			new = ' '.join(listWithAllWordsStemmed)
 			doc.set_docAll(new)
-			# print(new)
 		for query in allQueries:
 			new = query.get_queryContent()
 			listWithAllWordsTokenized = nltk.word_tokenize(new)
@@ -168,7 +164,6 @@ def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, remov
 				listWithAllWordsStemmed.append(word)
 			new = ' '.join(listWithAllWordsStemmed)
 			query.set_queryContent(new)
-			# print(new)
 	return
 
 def indexMedlineCollection(allDocs):
@@ -182,7 +177,7 @@ def indexMedlineCollection(allDocs):
 	writer.commit()
 
 def checkDocumentsIndexed():
-	ix = open_dir('indexdir')
+	ix = open_dir("indexdir")
 	allDocs = ix.searcher().documents()
 	for doc in allDocs:
 		print(doc)
@@ -193,28 +188,22 @@ def querySearch(allQueries):
 		ix = open_dir('indexdir')
 		with ix.searcher(weighting = scoring.Frequency) as searcher:
 			queryString = QueryParser("docAll", ix.schema, group = qparser.OrGroup.factory(0.9)).parse(queryPrepared)
-			# queryString = QueryParser("docAll", ix.schema).parse(queryPrepared)
 			results = searcher.search(queryString, limit = None)
-			# print(results)
 			for i in results:
-				query.get_queryResult().add_docIDRetrieved_frequency(i["docID"])
-				query.get_queryResult().add_score_frequency(i.score)
+				query.get_QueryResult().add_docIDRetrieved_frequency(i["docID"])
+				query.get_QueryResult().add_score_frequency(i.score)
 		with ix.searcher(weighting = scoring.TF_IDF) as searcher:
 			queryString = QueryParser("docAll", ix.schema, group = qparser.OrGroup.factory(0.9)).parse(queryPrepared)
-			# queryString = QueryParser("docAll", ix.schema).parse(queryPrepared)
 			results = searcher.search(queryString, limit = None)
-			# print(results)
 			for i in results:
-				query.get_queryResult().add_docIDRetrieved_TFIDF(i["docID"])
-				query.get_queryResult().add_score_TFIDF(i.score)
+				query.get_QueryResult().add_docIDRetrieved_TFIDF(i["docID"])
+				query.get_QueryResult().add_score_TFIDF(i.score)
 		with ix.searcher(weighting = scoring.BM25F) as searcher:
 			queryString = QueryParser("docAll", ix.schema, group = qparser.OrGroup.factory(0)).parse(queryPrepared)
-			# queryString = QueryParser("docAll", ix.schema).parse(queryPrepared)
 			results = searcher.search(queryString, limit = None)
-			# print(results)
 			for i in results:
-				query.get_queryResult().add_docIDRetrieved_BM25F(i["docID"])
-				query.get_queryResult().add_score_BM25F(i.score)
+				query.get_QueryResult().add_docIDRetrieved_BM25F(i["docID"])
+				query.get_QueryResult().add_score_BM25F(i.score)
 	return
 
 def assessSystemPerformance(allQueries):
@@ -225,14 +214,13 @@ def assessSystemPerformance(allQueries):
 	TOTAL_recalls_TFID = 0
 	TOTAL_recalls_BM25F = 0
 	for query in allQueries:
-		listOftop10_retrieved_frequency = query.get_queryResult().get_listOfDocIDsRetrieved_frequency()[:10]
-		listOftop10_retrieved_TFIDF = query.get_queryResult().get_listOfDocIDsRetrieved_TFIDF()[:10]
-		listOftop10_retrieved_BM25F = query.get_queryResult().get_listOfDocIDsRetrieved_BM25F()[:10]
-		listOf_relevant = query.get_queryResult().get_listOfDocIDsGiven()
-		print('\nrelevant:', listOf_relevant)
-		print('top 10 retrieved by frequency:', listOftop10_retrieved_frequency)
-		print('top 10 retrieved by TF-IDF:', listOftop10_retrieved_TFIDF)
-		print('top 10 retrieved by BM25F:', listOftop10_retrieved_BM25F)
+		listOftop10_retrieved_frequency = query.get_QueryResult().get_listOfDocIDsRetrieved_frequency()[:10]
+		listOftop10_retrieved_TFIDF = query.get_QueryResult().get_listOfDocIDsRetrieved_TFIDF()[:10]
+		listOftop10_retrieved_BM25F = query.get_QueryResult().get_listOfDocIDsRetrieved_BM25F()[:10]
+		listOf_relevant = query.get_QueryResult().get_listOfDocIDsGiven()
+		print('\n\n**************************************************************************')
+		print('Query ID:', query.get_queryID())
+		print('Relevant documents:', listOf_relevant)
 		relevant_retrieved_frequency = 0
 		relevant_retrieved_TFIDF = 0
 		relevant_retrieved_BM25F = 0
@@ -240,71 +228,86 @@ def assessSystemPerformance(allQueries):
 		for retrieved in listOftop10_retrieved_frequency:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_frequency += 1
+		print('--------------------------------')
+		print('| Scoring algorithm: FREQUENCY |')
+		print('--------------------------------')
+		print('Top 10 documents retrieved by Frequency:', listOftop10_retrieved_frequency)
 		precision_at_10_frequency = (relevant_retrieved_frequency / len(listOftop10_retrieved_frequency)) * 100
-		print("Precision @ 10:", precision_at_10_frequency)
+		print("\tPrecision@10:", round(precision_at_10_frequency, 1), '%')
 		recall_at_10_frequency = (relevant_retrieved_frequency / len(listOf_relevant)) * 100
-		print("Recall @ 10:", recall_at_10_frequency)
+		print("\tRecall@10:", round(recall_at_10_frequency, 1), '%')
 		TOTAL_precisions_frequency += precision_at_10_frequency
 		TOTAL_recalls_frequency += recall_at_10_frequency
 
 		for retrieved in listOftop10_retrieved_TFIDF:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_TFIDF += 1
+		print('-----------------------------')
+		print('| Scoring algorithm: TF-IDF |')
+		print('-----------------------------')
+		print('Top 10 documents retrieved by TF-IDF:', listOftop10_retrieved_TFIDF)
 		precision_at_10_TFIDF = (relevant_retrieved_TFIDF / len(listOftop10_retrieved_frequency)) * 100
-		print("Precision @ 10:", precision_at_10_TFIDF)
+		print("\tPrecision@10:", round(precision_at_10_TFIDF, 1), '%')
 		recall_at_10_TFIDF = (relevant_retrieved_TFIDF / len(listOf_relevant)) * 100
-		print("Recall @ 10:", recall_at_10_TFIDF)
+		print("\tRecall@10:", round(recall_at_10_TFIDF, 1), '%')
 		TOTAL_precisions_TFID += precision_at_10_TFIDF
 		TOTAL_recalls_TFID += recall_at_10_TFIDF
 
 		for retrieved in listOftop10_retrieved_BM25F:
 			if retrieved in listOf_relevant:
 				relevant_retrieved_BM25F += 1
+		print('----------------------------')
+		print('| Scoring algorithm: BM25F |')
+		print('----------------------------')
+		print('top 10 retrieved by BM25F:', listOftop10_retrieved_BM25F)
 		precision_at_10_BM25F = (relevant_retrieved_BM25F / len(listOftop10_retrieved_frequency)) * 100
-		print("Precision @ 10:", precision_at_10_BM25F)
+		print("\tPrecision@10:", round(precision_at_10_BM25F, 1), '%')
 		recall_at_10_BM25F = (relevant_retrieved_BM25F / len(listOf_relevant)) * 100
-		print("Recall @ 10:", recall_at_10_BM25F)
+		print("\tRecall@10:", round(recall_at_10_BM25F, 1), '%')
 		TOTAL_precisions_BM25F += precision_at_10_BM25F
 		TOTAL_recalls_BM25F += recall_at_10_BM25F
+	
+	print('\n\n')
+	print('----------------------------------------------------------')
+	print('| Mean Precision@10 for the different scoring algorithms |')
+	print('----------------------------------------------------------')
+	print('Mean Precision@10 for Frequency:', round((TOTAL_precisions_frequency / len(allQueries)), 1), '%')
+	print('Mean Precision@10 for TFIDF:', round((TOTAL_precisions_TFID / len(allQueries)), 1), '%')
+	print('Mean Precision@10 for BM25F:', round((TOTAL_precisions_BM25F / len(allQueries)), 1), '%')
 
-	print('\nMean Precision@10 for frequency:', (TOTAL_precisions_frequency / len(allQueries)), '%')
-	print('Mean Precision@10 for TFIDF:', (TOTAL_precisions_TFID / len(allQueries)), '%')
-	print('Mean Precision@10 for BM25F:', (TOTAL_precisions_BM25F / len(allQueries)), '%')
-
-	print('\nMean Recall@10 for frequency:', (TOTAL_recalls_frequency / len(allQueries)), '%')
-	print('Mean Recall@10 for TFIDF:', (TOTAL_recalls_TFID / len(allQueries)), '%')
-	print('Mean Recall@10 for BM25F:', (TOTAL_recalls_BM25F / len(allQueries)), '%')
+	print('-------------------------------------------------------')
+	print('| Mean Recall@10 for the different scoring algorithms |')
+	print('-------------------------------------------------------')
+	print('Mean Recall@10 for Frequency:', round((TOTAL_recalls_frequency / len(allQueries)), 1), '%')
+	print('Mean Recall@10 for TFIDF:', round((TOTAL_recalls_TFID / len(allQueries)), 1), '%')
+	print('Mean Recall@10 for BM25F:', round((TOTAL_recalls_BM25F / len(allQueries)), 1), '%')
 
 if __name__ == '__main__':
 
-	# PARSES DOCUMENTS FROM MED.ALL INTO OBJECTS OF TYPE DOCUMENT
+	# Parses documents from MED.ALL into objects of type Document
 	allDocs = parseAllDocs()
 
-	# PARSES QUERIES FROM MED.QRY INTO OBJECTS OF TYPE QUERY
+	# Parses queries from MED.QRY into objects of type Query
 	allQueries = parseAllQueries()
 
 	parseAllResults(allQueries)
 
-	# for query in allQueries:
-		# print("QUERY NUMBER:", query.get_queryID(), query.get_queryResult().get_listOfDocIDsGiven())
+	# Applies different preprocessing techniques to both documents and queries (there are three different
+	# preprocessing techniques avaiable that can be changed by setting "True" or "False")
+	preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation = True, removeStopwords = True, tokenizationAndStemmer = True)
 
-	# DIFERENT PREPROCESSING TECHNIQUES APPLIED TO BOTH DOCS AND QUERIES
-	preprocessingForDocsAndQueries(allDocs, allQueries, True, True, True)
-
-	# INDEXES THE DOCUMENTS WITH RESPECT TO THE SCHEMA DEFINED
+	# Indexes the documents with respect to the schema defined
 	indexMedlineCollection(allDocs)
 
-	# PRINTS THE INDEXATION GENERATED
+	# Prints the indexation generated
 	# checkDocumentsIndexed()
 
+	# Searches the queries using 3 different scoring algorithms to classify documents
 	querySearch(allQueries)
 
-	# for query in allQueries:
-		# print(query.get_queryID(), ':', query.get_queryResult().get_listOfDocIDsGiven(), '\nRETRIEVED BY FREQUENCY:', query.get_queryResult().get_listOfDocIDsRetrieved_frequency(), '\nRETRIEVED BY TF-IDF:', query.get_queryResult().get_listOfDocIDsRetrieved_TFIDF(), '\nRETRIEVED BY BM25F:', query.get_queryResult().get_listOfDocIDsRetrieved_BM25F(), '\n')
-		# print('SCORES BY FREQUENCY:', query.get_queryResult().get_listOfScores_frequency(), '\n')
-		# print(query.get_queryContent())
-
+	# Assesses the performance of the retrieval system by calculating the Precision@10 and the Recall@10
+	# for every query and by calculating the mean of these across all queries
 	assessSystemPerformance(allQueries)
 
-	# REMOVES THE DIRECTORY CREATED FOR THE INDEXING
+	# Removes the directory created for the indexing
 	shutil.rmtree("indexdir")
