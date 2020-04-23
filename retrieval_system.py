@@ -102,8 +102,8 @@ def parseAllResults(allQueries):
 			line = fp.readline()
 	return
 
-def preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation, removeStopwords, tokenizationAndStemmer):
-	if (removePonctuation == True):
+def preprocessingForDocsAndQueries(allDocs, allQueries, removePunctuation, removeStopwords, tokenizationAndStemmer):
+	if (removePunctuation == True):
 		for doc in allDocs:
 			new = doc.get_docAll()
 			new = re.sub("([0-9]+\.)", "", new)
@@ -272,14 +272,14 @@ def assessSystemPerformance(allQueries):
 	print('| Mean Precision@10 for the different scoring algorithms |')
 	print('----------------------------------------------------------')
 	print('Mean Precision@10 for Frequency:', round((TOTAL_precisions_frequency / len(allQueries)), 1), '%')
-	print('Mean Precision@10 for TFIDF:', round((TOTAL_precisions_TFID / len(allQueries)), 1), '%')
+	print('Mean Precision@10 for TF-IDF:', round((TOTAL_precisions_TFID / len(allQueries)), 1), '%')
 	print('Mean Precision@10 for BM25F:', round((TOTAL_precisions_BM25F / len(allQueries)), 1), '%')
 
 	print('-------------------------------------------------------')
 	print('| Mean Recall@10 for the different scoring algorithms |')
 	print('-------------------------------------------------------')
 	print('Mean Recall@10 for Frequency:', round((TOTAL_recalls_frequency / len(allQueries)), 1), '%')
-	print('Mean Recall@10 for TFIDF:', round((TOTAL_recalls_TFID / len(allQueries)), 1), '%')
+	print('Mean Recall@10 for TF-IDF:', round((TOTAL_recalls_TFID / len(allQueries)), 1), '%')
 	print('Mean Recall@10 for BM25F:', round((TOTAL_recalls_BM25F / len(allQueries)), 1), '%')
 
 if __name__ == '__main__':
@@ -294,7 +294,7 @@ if __name__ == '__main__':
 
 	# Applies different preprocessing techniques to both documents and queries (there are three different
 	# preprocessing techniques avaiable that can be changed by setting "True" or "False")
-	preprocessingForDocsAndQueries(allDocs, allQueries, removePonctuation = True, removeStopwords = True, tokenizationAndStemmer = True)
+	preprocessingForDocsAndQueries(allDocs, allQueries, removePunctuation = True, removeStopwords = True, tokenizationAndStemmer = True)
 
 	# Indexes the documents with respect to the schema defined
 	indexMedlineCollection(allDocs)
