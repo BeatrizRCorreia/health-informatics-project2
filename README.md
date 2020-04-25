@@ -11,7 +11,7 @@ Present the Python code used for solving the exercise, and comment on any decisi
 
 Notice that the file named MED.ALL contains a numeric identifier for each document (that you can use as the title) together with the document's contents, whereas the file named MED.QRY contains an identifier and a textual description of the information need (that you can use as the query to be submitted to the Woosh index). The file named MED.REL has four columns, with the first one referring to the query identifier, and the third one referring to the document identifier.
 ___
-**Files that solve this question:**
+**Files that solve this question:**\
 main file: [retrieval_system.py](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/retrieval_system.py)\
 objects files: [Document.py](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/Document.py), [Query.py](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/Query.py) and [QueryResult.py](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/QueryResult.py)\
 Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_informatics_project2/tree/master/med) with files [MED.ALL](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/med/MED.ALL) (documents), [MED.QRY](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/med/MED.QRY) (queries) and [MED.REL](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/med/MED.REL) (relevance judgements)
@@ -65,7 +65,7 @@ By changing one or multiple parameters to _False_, the corresponding pre-process
 </p>
 
 <p align="center">
-	<img width="700" height="518" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/table-different-techniques.png">
+	<img width="750" height="555" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/table-different-techniques.png">
 </p>
 
 **Conclusion:**
