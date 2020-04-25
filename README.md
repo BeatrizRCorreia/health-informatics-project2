@@ -44,7 +44,9 @@ Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_infor
 
 **(iii)** I calculate the Precision@10 and the Recall@10 for every query by making use of the relevance judgments in the file "MED.REL". After these are calculated for all the queries, I make a mean of the values obtained to assess the performance of the system, as can be seen in this screenshot of the final printings in the program:
 
-![Second program screenshot](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/second-program-screenshot.png)
+<p align="center">
+	<img width="545" height="226" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/second-program-screenshot.png">
+</p>
 
 **Functionality - the pre-processing techniques can be selected:**
 
