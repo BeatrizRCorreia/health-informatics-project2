@@ -32,6 +32,10 @@ Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_infor
 2. Get to the folder where the file "retrieval_system.py" is (along with this file, the med folder, and other Python files: "Document.py", "Query.py" and "QueryResult.py").
 3. Run the command "python3 retrieval_system.py".
 
+**This is a screenshot of part of the command-line after executing my program:** it shows the Precision@10 and Recall@10 of the different scoring algorithms for Query 27 (all the preprocessing techniques mentioned before were applied).
+
+![First program screenshot](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/first-program-screenshot.png)
+
 **Concerning the points mentioned in the Assignment:**
 
 **(i)** To check the indexation of the Medline collection, line 303 of the file "retrieval_system.py" can be uncommented. This line makes a call to a function `checkDocumentsIndexed()` that presents for every document the contents that were saved and are inside the directory responsible for indexation ("indexdir"). It is probably best to comment line 310 to check this as this one is printing a lot of information to the command-line.
@@ -39,6 +43,8 @@ Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_infor
 **(ii)** The function `querySearch(allQueries)`, called in line 306 of the file "retrieval_system.py", uses the indexation to retrieve documents for each query in the file named "MED.QRY". This is the search function that looks through the indexed documents using three different scoring algorithms (Frequency, TF-IDF, and BM25F) to find the most relevant documents for a query and retrieve them.
 
 **(iii)** I calculate the Precision@10 and the Recall@10 for every query by making use of the relevance judgments in the file "MED.REL". After these are calculated for all the queries, I make a mean of the values obtained to assess the performance of the system, as can be seen in this screenshot of the final printings in the program:
+
+![Second program screenshot](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/second-program-screenshot.png)
 
 **Functionality - the pre-processing techniques can be selected:**
 
@@ -50,19 +56,14 @@ By changing one or multiple parameters to _False_, the corresponding pre-process
 
 **Effects – different combinations of the pre-processing techniques:**
 
+![Venn diagram](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/venn-diagram.png)
 
-```diff
-+ **Conclusion:**
-```
+![Table with different techniques](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/table-different-techniques.png)
 
-I can conclude that the scoring scheme and the pre-processing techniques used have a substantial impact in the retrieval
-of relevant documents.
+**Conclusion:**
 
-The scoring algorithm that was able to retrieve the most relevant documents was BM25F as can be seen in the previous
-table. This scoring scheme achieved a Precision@10 of 67.7% and a Recall@10 of 32.3%. To this result also contributed
-the execution of all the pre-processing techniques, although the same values were obtained when the removal of stopwords
-was disabled.
+I can conclude that the scoring scheme and the pre-processing techniques used have a substantial impact in the retrieval of relevant documents.
 
-It is also interesting to notice, that even though the exclusion of this technique was beneficial for the BM25F
-results, for a scoring scheme based in the frequency of the words, the best Precision@10 and Recall@10 (53.0% and
-25.3%) were a consequence of exclusively applying it.
+The scoring algorithm that was able to retrieve the most relevant documents was BM25F as can be seen in the previous table. This scoring scheme achieved a Precision@10 of 67.7% and a Recall@10 of 32.3%. To this result also contributed the execution of all the pre-processing techniques, although the same values were obtained when the removal of stopwords was disabled.
+
+It is also interesting to notice, that even though the exclusion of this technique was beneficial for the BM25F results, for a scoring scheme based in the frequency of the words, the best Precision@10 and Recall@10 (53.0% and 25.3%) were a consequence of exclusively applying it.
