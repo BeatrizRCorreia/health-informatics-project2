@@ -34,7 +34,9 @@ Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_infor
 
 **This is a screenshot of part of the command-line after executing my program:** it shows the Precision@10 and Recall@10 of the different scoring algorithms for Query 27 (all the preprocessing techniques mentioned before were applied).
 
-![First program screenshot](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/first-program-screenshot.png)
+<p align="center">
+	<img width="750" height="367" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/first-program-screenshot.png">
+</p>
 
 **Concerning the points mentioned in the Assignment:**
 
@@ -45,7 +47,7 @@ Medline collection: [med folder](https://github.com/BeatrizRCorreia/health_infor
 **(iii)** I calculate the Precision@10 and the Recall@10 for every query by making use of the relevance judgments in the file "MED.REL". After these are calculated for all the queries, I make a mean of the values obtained to assess the performance of the system, as can be seen in this screenshot of the final printings in the program:
 
 <p align="center">
-	<img width="535" height="222" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/second-program-screenshot.png">
+	<img width="470" height="195" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/second-program-screenshot.png">
 </p>
 
 **Functionality - the pre-processing techniques can be selected:**
@@ -62,7 +64,9 @@ By changing one or multiple parameters to _False_, the corresponding pre-process
 	<img width="250" height="231" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/venn-diagram.png">
 </p>
 
-![Table with different techniques](https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/table-different-techniques.png)
+<p align="center">
+	<img width="700" height="518" src="https://github.com/BeatrizRCorreia/health_informatics_project2/blob/master/images-README.md/table-different-techniques.png">
+</p>
 
 **Conclusion:**
 
